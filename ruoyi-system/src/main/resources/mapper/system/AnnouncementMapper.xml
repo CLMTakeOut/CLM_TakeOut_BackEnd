@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AnnouncementMapper">
+    
+    <resultMap type="Announcement" id="AnnouncementResult">
+        <result property="announcementId"    column="announcement_id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="picture"    column="picture"    />
+        <result property="notice"    column="notice"    />
+    </resultMap>
+
+    <sql id="selectAnnouncementVo">
+        select announcement_id, shop_id, customer_id, picture, notice from announcement
+    </sql>
+
+    <select id="selectAnnouncementList" parameterType="Announcement" resultMap="AnnouncementResult">
+        <include refid="selectAnnouncementVo"/>
+        <where>  
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="notice != null  and notice != ''"> and notice = #{notice}</if>
+        </where>
+    </select>
+    
+    <select id="selectAnnouncementById" parameterType="Integer" resultMap="AnnouncementResult">
+        <include refid="selectAnnouncementVo"/>
+        where announcement_id = #{announcementId}
+    </select>
+        
+    <insert id="insertAnnouncement" parameterType="Announcement" useGeneratedKeys="true" keyProperty="announcementId">
+        insert into announcement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">shop_id,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="picture != null and picture != ''">picture,</if>
+            <if test="notice != null">notice,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">#{shopId},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="picture != null and picture != ''">#{picture},</if>
+            <if test="notice != null">#{notice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAnnouncement" parameterType="Announcement">
+        update announcement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="picture != null and picture != ''">picture = #{picture},</if>
+            <if test="notice != null">notice = #{notice},</if>
+        </trim>
+        where announcement_id = #{announcementId}
+    </update>
+
+    <delete id="deleteAnnouncementById" parameterType="Integer">
+        delete from announcement where announcement_id = #{announcementId}
+    </delete>
+
+    <delete id="deleteAnnouncementByIds" parameterType="String">
+        delete from announcement where announcement_id in 
+        <foreach item="announcementId" collection="array" open="(" separator="," close=")">
+            #{announcementId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ShopMapper">
+    
+    <resultMap type="Shop" id="ShopResult">
+        <result property="shopId"    column="shop_id"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="shopAddress"    column="shop_address"    />
+        <result property="shopContacts"    column="shop_contacts"    />
+        <result property="shopTelephone"    column="shop_telephone"    />
+        <result property="shopLogo"    column="shop_logo"    />
+    </resultMap>
+
+    <sql id="selectShopVo">
+        select shop_id, shop_name, shop_address, shop_contacts, shop_telephone, shop_logo from shop
+    </sql>
+
+    <select id="selectShopList" parameterType="Shop" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        <where>  
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="shopAddress != null  and shopAddress != ''"> and shop_address = #{shopAddress}</if>
+            <if test="shopContacts != null  and shopContacts != ''"> and shop_contacts = #{shopContacts}</if>
+            <if test="shopTelephone != null  and shopTelephone != ''"> and shop_telephone = #{shopTelephone}</if>
+            <if test="shopLogo != null  and shopLogo != ''"> and shop_logo = #{shopLogo}</if>
+        </where>
+    </select>
+    
+    <select id="selectShopById" parameterType="Integer" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        where shop_id = #{shopId}
+    </select>
+        
+    <insert id="insertShop" parameterType="Shop" useGeneratedKeys="true" keyProperty="shopId">
+        insert into shop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopName != null and shopName != ''">shop_name,</if>
+            <if test="shopAddress != null">shop_address,</if>
+            <if test="shopContacts != null">shop_contacts,</if>
+            <if test="shopTelephone != null">shop_telephone,</if>
+            <if test="shopLogo != null">shop_logo,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopName != null and shopName != ''">#{shopName},</if>
+            <if test="shopAddress != null">#{shopAddress},</if>
+            <if test="shopContacts != null">#{shopContacts},</if>
+            <if test="shopTelephone != null">#{shopTelephone},</if>
+            <if test="shopLogo != null">#{shopLogo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShop" parameterType="Shop">
+        update shop
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopName != null and shopName != ''">shop_name = #{shopName},</if>
+            <if test="shopAddress != null">shop_address = #{shopAddress},</if>
+            <if test="shopContacts != null">shop_contacts = #{shopContacts},</if>
+            <if test="shopTelephone != null">shop_telephone = #{shopTelephone},</if>
+            <if test="shopLogo != null">shop_logo = #{shopLogo},</if>
+        </trim>
+        where shop_id = #{shopId}
+    </update>
+
+    <delete id="deleteShopById" parameterType="Integer">
+        delete from shop where shop_id = #{shopId}
+    </delete>
+
+    <delete id="deleteShopByIds" parameterType="String">
+        delete from shop where shop_id in 
+        <foreach item="shopId" collection="array" open="(" separator="," close=")">
+            #{shopId}
+        </foreach>
+    </delete>
+</mapper>

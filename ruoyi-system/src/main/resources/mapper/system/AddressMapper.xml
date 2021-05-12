@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AddressMapper">
+    
+    <resultMap type="Address" id="AddressResult">
+        <result property="addressId"    column="address_id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="name"    column="name"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectAddressVo">
+        select address_id, customer_id, name, telephone, address from address
+    </sql>
+
+    <select id="selectAddressList" parameterType="Address" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        <where>  
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectAddressById" parameterType="Integer" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        where address_id = #{addressId}
+    </select>
+        
+    <insert id="insertAddress" parameterType="Address" useGeneratedKeys="true" keyProperty="addressId">
+        insert into address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">customer_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="telephone != null and telephone != ''">telephone,</if>
+            <if test="address != null and address != ''">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">#{customerId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="telephone != null and telephone != ''">#{telephone},</if>
+            <if test="address != null and address != ''">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAddress" parameterType="Address">
+        update address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+        </trim>
+        where address_id = #{addressId}
+    </update>
+
+    <delete id="deleteAddressById" parameterType="Integer">
+        delete from address where address_id = #{addressId}
+    </delete>
+
+    <delete id="deleteAddressByIds" parameterType="String">
+        delete from address where address_id in 
+        <foreach item="addressId" collection="array" open="(" separator="," close=")">
+            #{addressId}
+        </foreach>
+    </delete>
+</mapper>

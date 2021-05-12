@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CustomerMapper">
+    
+    <resultMap type="Customer" id="CustomerResult">
+        <result property="customerId"    column="customer_id"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="customerPwd"    column="customer_pwd"    />
+        <result property="sex"    column="sex"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="balance"    column="balance"    />
+        <result property="integral"    column="integral"    />
+        <result property="customerPortrait"    column="customer_portrait"    />
+    </resultMap>
+
+    <sql id="selectCustomerVo">
+        select customer_id, customer_name, customer_pwd, sex, telephone, balance, integral, customer_portrait from customer
+    </sql>
+
+    <select id="selectCustomerList" parameterType="Customer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        <where>  
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="customerPwd != null  and customerPwd != ''"> and customer_pwd = #{customerPwd}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="balance != null "> and balance = #{balance}</if>
+            <if test="integral != null "> and integral = #{integral}</if>
+            <if test="customerPortrait != null  and customerPortrait != ''"> and customer_portrait = #{customerPortrait}</if>
+        </where>
+    </select>
+    
+    <select id="selectCustomerById" parameterType="Integer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where customer_id = #{customerId}
+    </select>
+        
+    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="customerId">
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">customer_name,</if>
+            <if test="customerPwd != null and customerPwd != ''">customer_pwd,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="telephone != null and telephone != ''">telephone,</if>
+            <if test="balance != null">balance,</if>
+            <if test="integral != null">integral,</if>
+            <if test="customerPortrait != null">customer_portrait,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">#{customerName},</if>
+            <if test="customerPwd != null and customerPwd != ''">#{customerPwd},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="telephone != null and telephone != ''">#{telephone},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="integral != null">#{integral},</if>
+            <if test="customerPortrait != null">#{customerPortrait},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCustomer" parameterType="Customer">
+        update customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">customer_name = #{customerName},</if>
+            <if test="customerPwd != null and customerPwd != ''">customer_pwd = #{customerPwd},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="integral != null">integral = #{integral},</if>
+            <if test="customerPortrait != null">customer_portrait = #{customerPortrait},</if>
+        </trim>
+        where customer_id = #{customerId}
+    </update>
+
+    <delete id="deleteCustomerById" parameterType="Integer">
+        delete from customer where customer_id = #{customerId}
+    </delete>
+
+    <delete id="deleteCustomerByIds" parameterType="String">
+        delete from customer where customer_id in 
+        <foreach item="customerId" collection="array" open="(" separator="," close=")">
+            #{customerId}
+        </foreach>
+    </delete>
+</mapper>
