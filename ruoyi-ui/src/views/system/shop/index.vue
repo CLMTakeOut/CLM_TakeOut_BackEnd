@@ -10,15 +10,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="店铺地址" prop="shopAddress">
-        <el-input
-          v-model="queryParams.shopAddress"
-          placeholder="请输入店铺地址"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="联系人" prop="shopContacts">
         <el-input
           v-model="queryParams.shopContacts"
@@ -91,7 +82,7 @@
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺id(主键)" align="center" prop="shopId" />
+      <el-table-column label="店铺ID" align="center" prop="shopId" />
       <el-table-column label="店铺名" align="center" prop="shopName" />
       <el-table-column label="店铺地址" align="center" prop="shopAddress" />
       <el-table-column label="联系人" align="center" prop="shopContacts" />
@@ -116,7 +107,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -246,7 +237,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加【请填写功能名称】";
+      this.title = "新增店铺";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -255,7 +246,7 @@ export default {
       getShop(shopId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改【请填写功能名称】";
+        this.title = "修改店铺信息";
       });
     },
     /** 提交按钮 */
@@ -281,7 +272,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const shopIds = row.shopId || this.ids;
-      this.$confirm('是否确认删除【请填写功能名称】编号为"' + shopIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除店铺编号为"' + shopIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -295,7 +286,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有【请填写功能名称】数据项?', "警告", {
+      this.$confirm('是否确认导出所有店铺信息数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

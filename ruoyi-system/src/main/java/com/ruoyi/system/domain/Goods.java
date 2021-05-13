@@ -32,7 +32,7 @@ public class Goods extends BaseEntity
 
     /** 销售量 */
     @Excel(name = "销售量")
-    private Integer salesvolume;
+    private Integer salesVolume;
 
     /** 评分 */
     @Excel(name = "评分")
@@ -40,7 +40,7 @@ public class Goods extends BaseEntity
 
     /** 详细描述 */
     @Excel(name = "详细描述")
-    private String describe;
+    private String goodsDescribe;
 
     /** 商品图片 */
     @Excel(name = "商品图片")
@@ -88,12 +88,12 @@ public class Goods extends BaseEntity
     }
     public void setSalesvolume(Integer salesvolume) 
     {
-        this.salesvolume = salesvolume;
+        this.salesVolume = salesvolume;
     }
 
     public Integer getSalesvolume() 
     {
-        return salesvolume;
+        return salesVolume;
     }
     public void setScore(Long score) 
     {
@@ -104,14 +104,14 @@ public class Goods extends BaseEntity
     {
         return score;
     }
-    public void setDescribe(String describe) 
+    public void setGoodsDescribe(String describe)
     {
-        this.describe = describe;
+        this.goodsDescribe = describe;
     }
 
-    public String getDescribe() 
+    public String getGoodsDescribe()
     {
-        return describe;
+        return goodsDescribe;
     }
     public void setGoodsLogo(String goodsLogo) 
     {
@@ -141,7 +141,7 @@ public class Goods extends BaseEntity
             .append("price", getPrice())
             .append("salesvolume", getSalesvolume())
             .append("score", getScore())
-            .append("describe", getDescribe())
+            .append("describe", getGoodsDescribe())
             .append("goodsLogo", getGoodsLogo())
             .append("goodsRecommend", getGoodsRecommend())
             .toString();

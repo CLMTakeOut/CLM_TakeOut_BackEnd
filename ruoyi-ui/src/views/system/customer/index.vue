@@ -81,7 +81,7 @@
 
     <el-table v-loading="loading" :data="customerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户id(主键)" align="center" prop="customerId" />
+      <el-table-column label="用户ID" align="center" prop="customerId" />
       <el-table-column label="用户名" align="center" prop="customerName" />
       <el-table-column label="密码" align="center" prop="customerPwd" />
       <el-table-column label="性别" align="center" prop="sex" />
@@ -296,7 +296,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const customerIds = row.customerId || this.ids;
-      this.$confirm('是否确认删除【请填写功能名称】编号为"' + customerIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除客户编号为"' + customerIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -310,7 +310,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有【请填写功能名称】数据项?', "警告", {
+      this.$confirm('是否确认导出所有客户数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="店铺id(外键）" prop="shopId">
+      <el-form-item label="店铺ID" prop="shopId">
         <el-input
           v-model="queryParams.shopId"
-          placeholder="请输入店铺id(外键）"
+          placeholder="请输入店铺ID"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -32,24 +32,6 @@
         <el-input
           v-model="queryParams.salesvolume"
           placeholder="请输入销售量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="评分" prop="score">
-        <el-input
-          v-model="queryParams.score"
-          placeholder="请输入评分"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="详细描述" prop="describe">
-        <el-input
-          v-model="queryParams.describe"
-          placeholder="请输入详细描述"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -109,8 +91,8 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="商品id(主键)" align="center" prop="goodsId" />
-      <el-table-column label="店铺id(外键）" align="center" prop="shopId" />
+      <el-table-column label="商品ID" align="center" prop="goodsId" />
+      <el-table-column label="店铺名" align="center" prop="shopId" />
       <el-table-column label="商品名" align="center" prop="goodsName" />
       <el-table-column label="商品价格" align="center" prop="price" />
       <el-table-column label="销售量" align="center" prop="salesvolume" />
@@ -137,7 +119,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -279,7 +261,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加【请填写功能名称】";
+      this.title = "添加商品";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -288,7 +270,7 @@ export default {
       getGoods(goodsId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改【请填写功能名称】";
+        this.title = "修改商品信息";
       });
     },
     /** 提交按钮 */
@@ -314,7 +296,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const goodsIds = row.goodsId || this.ids;
-      this.$confirm('是否确认删除【请填写功能名称】编号为"' + goodsIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除商品编号为"' + goodsIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -328,7 +310,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有【请填写功能名称】数据项?', "警告", {
+      this.$confirm('是否确认导出所有商品信息数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
