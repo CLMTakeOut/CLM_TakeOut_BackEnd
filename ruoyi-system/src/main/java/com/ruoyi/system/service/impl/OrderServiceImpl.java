@@ -44,18 +44,6 @@ public class OrderServiceImpl implements IOrderService
     }
 
     /**
-     * 新增【请填写功能名称】
-     * 
-     * @param order 【请填写功能名称】
-     * @return 结果
-     */
-    @Override
-    public int insertOrder(Order order)
-    {
-        return orderMapper.insertOrder(order);
-    }
-
-    /**
      * 修改【请填写功能名称】
      * 
      * @param order 【请填写功能名称】

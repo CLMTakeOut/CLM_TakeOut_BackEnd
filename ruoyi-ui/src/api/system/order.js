@@ -17,6 +17,14 @@ export function getOrder(orderId) {
   })
 }
 
+// 根据订单id查询对应的商品详情
+export function getOrderDetails(orderId) {
+  return request({
+    url: "/system/order/getOrderDetails/" + orderId,
+    method: "get"
+  })
+}
+
 // 新增【请填写功能名称】
 export function addOrder(data) {
   return request({

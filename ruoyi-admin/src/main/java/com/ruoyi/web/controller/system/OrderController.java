@@ -1,16 +1,15 @@
 package com.ruoyi.system.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.system.domain.OrderGoods;
+import com.ruoyi.system.service.OrderGoodsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -32,7 +31,12 @@ public class OrderController extends BaseController
 {
     @Autowired
     private IOrderService orderService;
+    OrderGoodsService orderGoodsService;
 
+    @Autowired
+    public void setOrderGoodsService(OrderGoodsService orderGoodsService) {
+        this.orderGoodsService = orderGoodsService;
+    }
     /**
      * 查询【请填写功能名称】列表
      */
@@ -45,6 +49,15 @@ public class OrderController extends BaseController
         return getDataTable(list);
     }
 
+    @RequestMapping(value = "/getOrderDetails/{orderId}",method = RequestMethod.GET)
+    public String list(@PathVariable Integer orderId)
+    {
+        ArrayList<OrderGoods> list = orderGoodsService.selectOrderGoodsById(orderId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("msg","获取成功!");
+        jsonObject.put("data",list);
+        return JSON.toJSONString(jsonObject);
+    }
     /**
      * 导出【请填写功能名称】列表
      */
@@ -66,17 +79,6 @@ public class OrderController extends BaseController
     public AjaxResult getInfo(@PathVariable("orderId") Long orderId)
     {
         return AjaxResult.success(orderService.selectOrderById(orderId));
-    }
-
-    /**
-     * 新增【请填写功能名称】
-     */
-    @PreAuthorize("@ss.hasPermi('system:order:add')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody Order order)
-    {
-        return toAjax(orderService.insertOrder(order));
     }
 
     /**

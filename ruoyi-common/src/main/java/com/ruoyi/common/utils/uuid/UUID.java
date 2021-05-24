@@ -16,6 +16,12 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 {
     private static final long serialVersionUID = -1185015143654744140L;
 
+    public UUID(long mostSigBits) {
+
+        this.mostSigBits = mostSigBits;
+        leastSigBits = 0;
+    }
+
     /**
      * SecureRandom 的单例
      *

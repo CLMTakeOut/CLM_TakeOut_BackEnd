@@ -22,13 +22,16 @@ public class Goods extends BaseEntity
     @Excel(name = "店铺id(外键）")
     private Integer shopId;
 
+    /*店铺名*/
+    private String shopName;
+
     /** 商品名 */
     @Excel(name = "商品名")
     private String goodsName;
 
     /** 商品价格 */
     @Excel(name = "商品价格")
-    private Long price;
+    private Double price;
 
     /** 销售量 */
     @Excel(name = "销售量")
@@ -48,7 +51,7 @@ public class Goods extends BaseEntity
 
     /** 推荐商品？ */
     @Excel(name = "推荐商品？")
-    private String goodsRecommend;
+    private Integer goodsRecommend;
 
     public void setGoodsId(Integer goodsId) 
     {
@@ -77,15 +80,23 @@ public class Goods extends BaseEntity
     {
         return goodsName;
     }
-    public void setPrice(Long price) 
+    public void setPrice(Double price)
     {
         this.price = price;
     }
 
-    public Long getPrice() 
+    public Double getPrice()
     {
         return price;
     }
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
     public void setSalesvolume(Integer salesvolume) 
     {
         this.salesVolume = salesvolume;
@@ -122,12 +133,12 @@ public class Goods extends BaseEntity
     {
         return goodsLogo;
     }
-    public void setGoodsRecommend(String goodsRecommend) 
+    public void setGoodsRecommend(Integer goodsRecommend)
     {
         this.goodsRecommend = goodsRecommend;
     }
 
-    public String getGoodsRecommend() 
+    public Integer getGoodsRecommend()
     {
         return goodsRecommend;
     }

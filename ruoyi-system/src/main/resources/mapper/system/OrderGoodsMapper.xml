@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrderGoodsMapper">
+    <resultMap id="orderGoodsResult" type="OrderGoods">
+        <result property="orderGoodsId" column="order_goods_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsAmount" column="goods_amount"/>
+        <association property="goods" resultMap="goodsResult">
+        </association>
+    </resultMap>
+    <resultMap id="goodsResult" type="Goods">
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <select id="selectOrderGoodsById" parameterType="integer" resultMap="orderGoodsResult">
+        select order_goods_id,og.order_id,og.goods_id,goods_amount,
+               g.goods_id,g.goods_name,g.price
+        from order_goods og inner join goods g on og.goods_id = g.goods_id
+        where order_id = #{orderId};
+    </select>
+</mapper>

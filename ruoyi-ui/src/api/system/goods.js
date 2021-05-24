@@ -16,7 +16,14 @@ export function getGoods(goodsId) {
     method: 'get'
   })
 }
-
+// 获取商品图片
+export function getGoodsPicture(imgUrl) {
+  return request({
+    url: imgUrl,
+    method: 'get',
+    responseType: "blob"
+  })
+}
 // 新增【请填写功能名称】
 export function addGoods(data) {
   return request({

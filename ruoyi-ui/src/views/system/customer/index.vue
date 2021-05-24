@@ -36,38 +36,6 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:customer:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:customer:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:customer:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="warning"
           plain
           icon="el-icon-download"
@@ -82,12 +50,29 @@
     <el-table v-loading="loading" :data="customerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="用户ID" align="center" prop="customerId" />
-      <el-table-column label="用户名" align="center" prop="customerName" />
+      <el-table-column label="用户名" align="center">
+        <template slot-scope="scope">
+          <el-tag type="success" effect="dark">{{scope.row.customerName}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="密码" align="center" prop="customerPwd" />
-      <el-table-column label="性别" align="center" prop="sex" />
-      <el-table-column label="电话" align="center" prop="telephone" />
-      <el-table-column label="余额" align="center" prop="balance" />
-      <el-table-column label="积分" align="center" prop="integral" />
+      <el-table-column label="性别" align="center" prop="sex">
+        <template slot-scope="scope">
+          <el-tag effect="dark">{{scope.row.sex}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="电话" align="center" prop="telephone">
+      </el-table-column>
+      <el-table-column label="余额" align="center" prop="balance">
+        <template slot-scope="scope">
+          <el-tag type="warning" effect="dark">{{scope.row.balance}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="积分" align="center" prop="integral">
+        <template slot-scope="scope">
+          <el-tag type="warning" effect="dark">{{scope.row.integral}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="用户头像" align="center" prop="customerPortrait" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -121,10 +106,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="用户名" prop="customerName">
-          <el-input v-model="form.customerName" placeholder="请输入用户名" />
+          <el-input type="text" v-model="form.customerName" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="customerPwd">
-          <el-input v-model="form.customerPwd" placeholder="请输入密码" />
+          <el-input type="text" v-model="form.customerPwd" placeholder="请输入密码" />
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-select v-model="form.sex" placeholder="请选择性别">
@@ -133,13 +118,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="电话" prop="telephone">
-          <el-input v-model="form.telephone" placeholder="请输入电话" />
+          <el-input type="tel" v-model="form.telephone" placeholder="请输入电话" />
         </el-form-item>
         <el-form-item label="余额" prop="balance">
-          <el-input v-model="form.balance" placeholder="请输入余额" />
+          <el-input type="number" v-model="form.balance" placeholder="请输入余额" />
         </el-form-item>
         <el-form-item label="积分" prop="integral">
-          <el-input v-model="form.integral" placeholder="请输入积分" />
+          <el-input type="number" v-model="form.integral" placeholder="请输入积分" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

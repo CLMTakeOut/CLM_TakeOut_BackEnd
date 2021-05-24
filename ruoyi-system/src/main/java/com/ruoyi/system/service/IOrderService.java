@@ -28,14 +28,6 @@ public interface IOrderService
     public List<Order> selectOrderList(Order order);
 
     /**
-     * 新增【请填写功能名称】
-     * 
-     * @param order 【请填写功能名称】
-     * @return 结果
-     */
-    public int insertOrder(Order order);
-
-    /**
      * 修改【请填写功能名称】
      * 
      * @param order 【请填写功能名称】

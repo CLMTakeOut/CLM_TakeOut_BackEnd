@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="Goods" id="GoodsResult">
         <result property="goodsId"    column="goods_id"    />
         <result property="shopId"    column="shop_id"    />
+        <result property="shopName" column="shop_name"/>
         <result property="goodsName"    column="goods_name"    />
         <result property="price"    column="price"    />
         <result property="salesVolume"    column="salesVolume"    />
@@ -17,20 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectGoodsVo">
-        select goods_id, shop_id, goods_name, price, salesVolume, score, goods_describe, goods_logo, goods_recommend from goods
+        select goods_id,shop_name,g.shop_id, goods_name, price, salesVolume, score, goods_describe, goods_logo, goods_recommend from goods g JOIN shop s ON s.shop_id = g.shop_id
     </sql>
 
     <select id="selectGoodsList" parameterType="Goods" resultMap="GoodsResult">
         <include refid="selectGoodsVo"/>
         <where>  
-            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="shopName != null and shopName != ''"> and shop_name = #{shopName}</if>
             <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
             <if test="price != null "> and price = #{price}</if>
             <if test="salesVolume != null "> and salesVolume = #{salesVolume}</if>
             <if test="score != null "> and score = #{score}</if>
-            <if test="goodsDescribe != null  and goodsDescribe != ''"> and goods_describe = #{goodsDescribe}</if>
-            <if test="goodsLogo != null  and goodsLogo != ''"> and goods_logo = #{goodsLogo}</if>
-            <if test="goodsRecommend != null  and goodsRecommend != ''"> and goods_recommend = #{goodsRecommend}</if>
         </where>
     </select>
     
@@ -69,7 +67,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="shopId != null">shop_id = #{shopId},</if>
             <if test="goodsName != null">goods_name = #{goodsName},</if>
             <if test="price != null">price = #{price},</if>
-            <if test="salesVolume != null">salesVolume = #{salesVolume},</if>
             <if test="score != null">score = #{score},</if>
             <if test="goodsDescribe != null">goods_describe = #{goodsDescribe},</if>
             <if test="goodsLogo != null">goods_logo = #{goodsLogo},</if>

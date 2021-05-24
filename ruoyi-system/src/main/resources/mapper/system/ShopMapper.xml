@@ -24,7 +24,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="shopAddress != null  and shopAddress != ''"> and shop_address = #{shopAddress}</if>
             <if test="shopContacts != null  and shopContacts != ''"> and shop_contacts = #{shopContacts}</if>
             <if test="shopTelephone != null  and shopTelephone != ''"> and shop_telephone = #{shopTelephone}</if>
-            <if test="shopLogo != null  and shopLogo != ''"> and shop_logo = #{shopLogo}</if>
         </where>
     </select>
     

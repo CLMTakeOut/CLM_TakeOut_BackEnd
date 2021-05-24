@@ -16,7 +16,14 @@ export function getShop(shopId) {
     method: 'get'
   })
 }
-
+// 获取店铺图片
+export function getShopLogo(url) {
+  return request({
+    url: url,
+    method: 'get',
+    responseType: "blob"
+  })
+}
 // 新增【请填写功能名称】
 export function addShop(data) {
   return request({

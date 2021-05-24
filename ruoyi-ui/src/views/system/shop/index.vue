@@ -47,28 +47,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:shop:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:shop:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="warning"
           plain
           icon="el-icon-download"
@@ -83,11 +61,28 @@
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="店铺ID" align="center" prop="shopId" />
-      <el-table-column label="店铺名" align="center" prop="shopName" />
+      <el-table-column label="店铺名" align="center" prop="shopName">
+        <template slot-scope="scope">
+          <el-tag effect="dark">{{scope.row.shopName}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="店铺地址" align="center" prop="shopAddress" />
-      <el-table-column label="联系人" align="center" prop="shopContacts" />
+      <el-table-column label="联系人" align="center" prop="shopContacts">
+        <template slot-scope="scope">
+          <el-tag type="success">{{scope.row.shopContacts}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="联系电话" align="center" prop="shopTelephone" />
-      <el-table-column label="店铺logo" align="center" prop="shopLogo" />
+      <el-table-column label="店铺logo" align="center" prop="shopLogo" >
+        <template slot-scope="scope">
+          <CustomImage 
+            :key="uploadImgUrl"
+            width="50"
+            height="50"
+            :url="`/system/shop/getShopLogo/${scope.row.shopId}`"
+          ></CustomImage>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -129,7 +124,68 @@
           <el-input v-model="form.shopContacts" placeholder="请输入联系人" />
         </el-form-item>
         <el-form-item label="联系电话" prop="shopTelephone">
-          <el-input v-model="form.shopTelephone" placeholder="请输入联系电话" />
+          <el-input type="tel" v-model="form.shopTelephone" placeholder="请输入联系电话" />
+        </el-form-item>
+        <!-- 上传店铺logo图片 -->
+        <el-form-item label="店铺Logo">
+          <el-row>
+            <el-col :span="16">
+              <el-upload
+                v-if="uploadImgUrl === '' ? false : true"
+                class="upload-demo"
+                ref="upload"
+                :action="upload.url"
+                :headers="upload.headers"
+                name="shopLog"
+                :data="{ 'shopId': form.shopId }"
+                :file-list="upload.fileList"
+                list-type="picture"
+                :auto-upload="false"
+              >
+                <el-button slot="trigger" size="small" type="primary"
+                  >选择商品图片</el-button
+                >
+                <el-button
+                  style="margin-left: 10px"
+                  size="small"
+                  type="success"
+                  @click="submitUpload"
+                  >点击上传</el-button
+                >
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png文件，且不超过500kb
+                </div>
+              </el-upload>
+              <el-upload
+                v-if="uploadImgUrl === '' ? true : false"
+                ref="addupload"
+                :action="upload.url"
+                :headers="upload.headers"
+                name="shopLog"
+                :data="{ 'shopId': shopId }"
+                :file-list="upload.fileList"
+                list-type="picture"
+                :auto-upload="false"
+              >
+                <el-button slot="trigger" size="small" type="primary"
+                  >选择商品图片</el-button
+                >
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png文件，且不超过500kb
+                </div>
+              </el-upload>
+            </el-col>
+            <el-col :span="8">
+              <custom-image
+                :key="uploadImgUrl"
+                ref="uploadImg"
+                width="100"
+                height="100"
+                v-if="uploadImgUrl === '' ? false : true"
+                :url="uploadImgUrl"
+              ></custom-image>
+            </el-col>
+          </el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -142,13 +198,27 @@
 
 <script>
 import { listShop, getShop, delShop, addShop, updateShop, exportShop } from "@/api/system/shop";
-
+import CustomImage from '../../../components/CustomImage/index';
+import { getToken } from "@/utils/auth";
 export default {
   name: "Shop",
   components: {
+    CustomImage
   },
   data() {
     return {
+      // 上传图片的路径
+      uploadImgUrl:"",
+      // 上传参数
+      shopId:0,
+      upload: {
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/system/shop/upload/logo",
+        // 上传的文件列表
+        fileList: [],
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -191,6 +261,18 @@ export default {
     this.getList();
   },
   methods: {
+    submitUpload() {
+      this.$refs.upload.submit();
+      setTimeout(() => {
+        this.$refs.upload.clearFiles();
+        this.$message({
+          message: "图片上传成功！",
+          type: "success",
+        });
+        this.uploadImgUrl = `/system/shop/getShopLogo/${this.form.shopId}?time=${new Date().getTime()}`;
+        console.log("图片地址：" + this.$refs.uploadImg.url);
+      }, 500);
+    },
     /** 查询【请填写功能名称】列表 */
     getList() {
       this.loading = true;
@@ -238,12 +320,17 @@ export default {
       this.reset();
       this.open = true;
       this.title = "新增店铺";
+      this.uploadImgUrl = "";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const shopId = row.shopId || this.ids
+       this.uploadImgUrl =
+        "/system/shop/getShopLogo/" + shopId + "?time=" + new Date().getTime();
       getShop(shopId).then(response => {
+        // 删除this.form对象中的goodsLogo
+        delete response.data["shopLogo"];
         this.form = response.data;
         this.open = true;
         this.title = "修改店铺信息";
@@ -264,6 +351,24 @@ export default {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
+              // 遍历当前的店铺列表
+              // goodsList
+              setTimeout(() => {
+                this.shopList.forEach((shop) => {
+                  if (shop.shopName === this.form.shopName) {
+                    this.shopId =  parseInt(shop.shopId);
+                    this.$refs.addupload.data.shopId = parseInt(shop.shopId);
+                    console.log(this.$refs.addupload.data);
+                    // 上传店铺Logo
+                    this.$refs.addupload.submit();
+                    setTimeout(() => {
+                      this.$refs.addupload.clearFiles();
+                      this.uploadImgUrl = `/system/shop/getShopLogo/${shop.shopId}?time=${new Date().getTime()}`;
+                    }, 200);
+                    // this.submitUpload();
+                  }
+                });
+              }, 500);
             });
           }
         }

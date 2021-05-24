@@ -42,7 +42,6 @@ public interface GoodsMapper
      * @return 结果
      */
     public int updateGoods(Goods goods);
-
     /**
      * 删除【请填写功能名称】
      * 

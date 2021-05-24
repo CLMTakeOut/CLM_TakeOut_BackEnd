@@ -1,16 +1,13 @@
 package com.ruoyi.system.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import com.ruoyi.system.domain.Goods;
+import com.ruoyi.web.controller.myutils.FileUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -19,6 +16,10 @@ import com.ruoyi.system.domain.Shop;
 import com.ruoyi.system.service.IShopService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 【请填写功能名称】Controller
@@ -79,6 +80,33 @@ public class ShopController extends BaseController
         return toAjax(shopService.insertShop(shop));
     }
 
+    /*上传店铺log图片*/
+    @RequestMapping(value = "/upload/logo",method = RequestMethod.POST)
+    public AjaxResult upload(@RequestParam("shopLog") MultipartFile file, @RequestParam("shopId")Integer shopId){
+        String filePath =  FileUtil.uploadFile("/upload/shop/", String.valueOf(shopId),file);
+        System.out.println("上传路径:"+filePath);
+        Shop shop = new Shop();
+        shop.setShopId(shopId);
+        shop.setShopLogo(filePath);
+        return toAjax(shopService.updateShop(shop));
+    }
+
+    /*获取店铺log*/
+    @RequestMapping(value = "/getShopLogo/{shopId}",method = RequestMethod.GET)
+    public void getGoodsPicture(@PathVariable("shopId")Integer shopId, HttpServletResponse response) throws IOException {
+        Shop shop = shopService.selectShopById(shopId);
+        String url = shop.getShopLogo();
+        System.out.println("店铺Logo地址："+url);
+        if (url != null){
+            byte[] bytes = FileUtil.getFileBytes(url);
+            // 设置返回类型
+            response.setContentType("image/jpeg");
+            response.setCharacterEncoding("UTF-8");
+            ServletOutputStream stream = response.getOutputStream();
+//            System.out.println("长度:"+bytes.length);
+            stream.write(bytes);
+        }
+    }
     /**
      * 修改【请填写功能名称】
      */
