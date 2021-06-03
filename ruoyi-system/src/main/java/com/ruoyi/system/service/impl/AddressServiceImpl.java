@@ -95,8 +95,10 @@ public class AddressServiceImpl implements IAddressService
     public int updateAddressUsing(Integer customerId,Integer addressId){
         //
         if (addressMapper.changeUsingToZero(customerId) != 0){
-            return addressMapper.changeUsingToOne(addressId);
+            int i = addressMapper.changeUsingToOne(addressId);
+            return i;
+        }else {
+            return 0;
         }
-        return 0;
     }
 }

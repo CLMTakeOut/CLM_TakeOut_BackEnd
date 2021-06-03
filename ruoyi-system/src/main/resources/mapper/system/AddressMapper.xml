@@ -10,11 +10,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="name"    column="name"    />
         <result property="telephone"    column="telephone"    />
         <result property="address"    column="address"    />
-        <result property="using" column="using"/>
+        <result property="using" column="is_use"/>
     </resultMap>
 
     <sql id="selectAddressVo">
-        select address_id, customer_id,`using`,name, telephone, address from address
+        select address_id, customer_id,is_use,name, telephone, address from address
     </sql>
 
     <select id="selectAddressList" parameterType="Address" resultMap="AddressResult">
@@ -70,18 +70,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <update id="changeUsingToOne" parameterType="integer">
-        UPDATE address SET `using` = 1 WHERE address_id = #{addressId};
+    <update id="changeUsingToOne" parameterType="int">
+        UPDATE address SET is_use = 1 WHERE address_id = #{addressId};
     </update>
     <!--修改当前选中地址-->
-    <update id="changeUsingToZero" parameterType="integer">
-        UPDATE address SET `using` = 0 WHERE customer_id = #{customerId};
-#         UPDATE address SET `using` = 1 WHERE address_id = #{addressId};
-<!--        <trim prefix="SET" suffixOverrides=",">-->
-<!--            <if test="customerId != null">customer_id = #{customerId},</if>-->
-<!--            <if test="name != null and name != ''">name = #{name},</if>-->
-<!--            <if test="telephone != null and telephone != ''">telephone = #{telephone},</if>-->
-<!--            <if test="address != null and address != ''">address = #{address},</if>-->
-<!--        </trim>-->
+    <update id="changeUsingToZero" parameterType="int">
+        UPDATE address SET is_use = 0 WHERE customer_id = #{customerId};
     </update>
 </mapper>

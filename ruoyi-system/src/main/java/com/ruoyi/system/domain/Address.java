@@ -35,6 +35,8 @@ public class Address extends BaseEntity
     private String address;
     private Integer using;
 
+    public Address() {
+    }
 
     public Address(Integer addressId, Integer customerId, String name, String telephone, String address, Integer using) {
         this.addressId = addressId;
