@@ -33,8 +33,27 @@ public class Address extends BaseEntity
     /** 详细地址 */
     @Excel(name = "详细地址")
     private String address;
+    private Integer using;
 
-    public void setAddressId(Integer addressId) 
+
+    public Address(Integer addressId, Integer customerId, String name, String telephone, String address, Integer using) {
+        this.addressId = addressId;
+        this.customerId = customerId;
+        this.name = name;
+        this.telephone = telephone;
+        this.address = address;
+        this.using = using;
+    }
+
+    public Integer getUsing() {
+        return using;
+    }
+
+    public void setUsing(Integer using) {
+        this.using = using;
+    }
+
+    public void setAddressId(Integer addressId)
     {
         this.addressId = addressId;
     }

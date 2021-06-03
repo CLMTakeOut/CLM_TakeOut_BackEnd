@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Address;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -58,4 +59,9 @@ public interface AddressMapper
      * @return 结果
      */
     public int deleteAddressByIds(Integer[] addressIds);
+
+
+    // 修改当前选中的地址
+    public int changeUsingToOne( Integer addressId);
+    public int changeUsingToZero( Integer customerId);
 }

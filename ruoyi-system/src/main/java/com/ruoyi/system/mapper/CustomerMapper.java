@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Customer;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -19,6 +20,11 @@ public interface CustomerMapper
      */
     public Customer selectCustomerById(Integer customerId);
 
+    // 根据手机号查找用户id
+    public Integer findCustomerByTel(String tel);
+
+    // 根据手机号和密码查找
+    public Customer findCustomerByTelAndPwd(@Param("tel")String tel, @Param("pwd") String pwd);
     /**
      * 查询【请填写功能名称】列表
      * 

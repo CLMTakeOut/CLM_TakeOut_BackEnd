@@ -16,8 +16,12 @@ import com.ruoyi.system.service.ICustomerService;
 @Service
 public class CustomerServiceImpl implements ICustomerService 
 {
-    @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    public void setCustomerMapper(CustomerMapper customerMapper) {
+        this.customerMapper = customerMapper;
+    }
 
     /**
      * 查询【请填写功能名称】
@@ -30,7 +34,15 @@ public class CustomerServiceImpl implements ICustomerService
     {
         return customerMapper.selectCustomerById(customerId);
     }
+    // 根据用户手机号查找
+    public Integer findCustomerByTel(String tel){
+        return customerMapper.findCustomerByTel(tel);
+    }
 
+    // 用户名和密码查找
+    public Customer findCustomerByTelAndPwd(String tel,String pwd){
+        return customerMapper.findCustomerByTelAndPwd(tel,pwd);
+    }
     /**
      * 查询【请填写功能名称】列表
      * 

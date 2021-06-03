@@ -18,7 +18,11 @@ public interface ICustomerService
      * @return 【请填写功能名称】
      */
     public Customer selectCustomerById(Integer customerId);
+    // 根据电话查找
+    public Integer findCustomerByTel(String tel);
 
+    // 根据手机号和密码查找
+    public Customer findCustomerByTelAndPwd(String tel,String pwd);
     /**
      * 查询【请填写功能名称】列表
      * 

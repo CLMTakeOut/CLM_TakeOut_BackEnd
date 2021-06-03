@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.Address;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 【请填写功能名称】Service接口
@@ -58,4 +59,7 @@ public interface IAddressService
      * @return 结果
      */
     public int deleteAddressById(Integer addressId);
+
+    // 修改当前地址
+    public int updateAddressUsing(Integer customerId,Integer addressId);
 }

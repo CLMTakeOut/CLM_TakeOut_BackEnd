@@ -36,7 +36,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectCustomerVo"/>
         where customer_id = #{customerId}
     </select>
-        
+    <select id="findCustomerByTel" parameterType="string" resultType="integer">
+        select customer_id from customer where telephone = #{tel}
+    </select>
+    <select id="findCustomerByTelAndPwd" parameterType="string" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where telephone = #{tel} and customer_pwd = #{pwd}
+    </select>
     <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="customerId">
         insert into customer
         <trim prefix="(" suffix=")" suffixOverrides=",">

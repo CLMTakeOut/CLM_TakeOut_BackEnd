@@ -90,4 +90,13 @@ public class AddressServiceImpl implements IAddressService
     {
         return addressMapper.deleteAddressById(addressId);
     }
+
+    // 修改当前地址
+    public int updateAddressUsing(Integer customerId,Integer addressId){
+        //
+        if (addressMapper.changeUsingToZero(customerId) != 0){
+            return addressMapper.changeUsingToOne(addressId);
+        }
+        return 0;
+    }
 }
