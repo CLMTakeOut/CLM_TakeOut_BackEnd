@@ -54,7 +54,9 @@ public class OrderServiceImpl implements IOrderService
     {
         return orderMapper.updateOrder(order);
     }
-
+    public int insertOrder(Order order){
+        return orderMapper.insertOrder(order);
+    }
     /**
      * 批量删除【请填写功能名称】
      * 

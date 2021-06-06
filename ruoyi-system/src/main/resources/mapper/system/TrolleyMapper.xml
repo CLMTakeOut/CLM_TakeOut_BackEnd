@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrolleyMapper">
+    
+    <resultMap type="Trolley" id="TrolleyResult">
+        <result property="trolleyId"    column="trolley_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="goodsAmount" column="goods_amount"/>
+        <association property="goods" javaType="Goods" column="goods_id" resultMap="GoodsResult">
+        </association>
+    </resultMap>
+    <resultMap type="Goods" id="GoodsResult">
+        <result property="goodsId"    column="goods_id"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="price"    column="price"    />
+        <result property="salesVolume"    column="salesVolume"    />
+        <result property="score"    column="score"    />
+        <result property="goodsDescribe"    column="goods_describe"    />
+        <result property="shopName" column="shop_name"/>
+        <result property="goodsType" column="goods_type"/>
+    </resultMap>
+    <sql id="selectTrolleyVo">
+        select
+            trolley_id, t.goods_id,goods_amount,customer_id,
+            g.goods_name,g.goods_type,g.shop_id,s.shop_name,g.price,g.score,g.salesVolume,g.goods_describe
+        from trolley t
+            join goods g on t.goods_id = g.goods_id join shop s on g.shop_id = s.shop_id
+    </sql>
+
+    <select id="selectTrolleyList" parameterType="Trolley" resultMap="TrolleyResult">
+        <include refid="selectTrolleyVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrolleyById" parameterType="Long" resultMap="TrolleyResult">
+        <include refid="selectTrolleyVo"/>
+        where trolley_id = #{trolleyId}
+    </select>
+        
+    <insert id="insertTrolley" parameterType="Trolley">
+        insert into trolley
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="trolleyId != null">trolley_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="goodsAmount != null">goods_amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="trolleyId != null">#{trolleyId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="goodsAmount != null">#{goodsAmount},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTrolley" parameterType="Trolley">
+        update trolley
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+        </trim>
+        where trolley_id = #{trolleyId}
+    </update>
+
+    <delete id="deleteTrolleyById" parameterType="Long">
+        delete from trolley where trolley_id = #{trolleyId}
+    </delete>
+    <delete id="deleteTrolleyByCustomerId" parameterType="Long">
+        delete  from  trolley where customer_id = #{customerId}
+    </delete>
+    <delete id="deleteTrolleyByIds" parameterType="String">
+        delete from trolley where trolley_id in 
+        <foreach item="trolleyId" collection="array" open="(" separator="," close=")">
+            #{trolleyId}
+        </foreach>
+    </delete>
+</mapper>

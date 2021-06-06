@@ -35,6 +35,7 @@ public interface OrderMapper
      */
     public int updateOrder(Order order);
 
+    public int insertOrder(Order order);
     /**
      * 删除【请填写功能名称】
      * 

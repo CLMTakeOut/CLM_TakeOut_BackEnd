@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.ArrayList;
+
 /**
  * 【请填写功能名称】对象 order
  * 
@@ -39,11 +41,20 @@ public class Order extends BaseEntity
     /** 订单状态 */
     @Excel(name = "订单状态")
     private Integer orderStatus;
-
+    private ArrayList<OrderGoods> orderGoodsList;
     /*订单总价格*/
     private Double totalPrice;
 
-    public void setOrderId(Long orderId) 
+
+    public ArrayList<OrderGoods> getOrderGoodsList() {
+        return orderGoodsList;
+    }
+
+    public void setOrderGoodsList(ArrayList<OrderGoods> orderGoodsList) {
+        this.orderGoodsList = orderGoodsList;
+    }
+
+    public void setOrderId(Long orderId)
     {
         this.orderId = orderId;
     }

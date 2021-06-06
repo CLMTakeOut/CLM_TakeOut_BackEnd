@@ -53,7 +53,38 @@ public class Goods extends BaseEntity
     @Excel(name = "推荐商品？")
     private Integer goodsRecommend;
 
-    public void setGoodsId(Integer goodsId) 
+    // 商品类型
+    private String goodsType;
+
+    // 数量
+    public Integer amount = 0;
+
+    public Integer getSalesVolume() {
+        return salesVolume;
+    }
+
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public void setSalesVolume(Integer salesVolume) {
+        this.salesVolume = salesVolume;
+    }
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    public void setGoodsId(Integer goodsId)
     {
         this.goodsId = goodsId;
     }
@@ -97,15 +128,6 @@ public class Goods extends BaseEntity
         this.shopName = shopName;
     }
 
-    public void setSalesvolume(Integer salesvolume) 
-    {
-        this.salesVolume = salesvolume;
-    }
-
-    public Integer getSalesvolume() 
-    {
-        return salesVolume;
-    }
     public void setScore(Long score) 
     {
         this.score = score;
@@ -150,7 +172,7 @@ public class Goods extends BaseEntity
             .append("shopId", getShopId())
             .append("goodsName", getGoodsName())
             .append("price", getPrice())
-            .append("salesvolume", getSalesvolume())
+            .append("salesvolume", getSalesVolume())
             .append("score", getScore())
             .append("describe", getGoodsDescribe())
             .append("goodsLogo", getGoodsLogo())

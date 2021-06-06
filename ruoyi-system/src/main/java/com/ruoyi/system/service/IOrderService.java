@@ -34,7 +34,7 @@ public interface IOrderService
      * @return 结果
      */
     public int updateOrder(Order order);
-
+    public int insertOrder(Order order);
     /**
      * 批量删除【请填写功能名称】
      * 

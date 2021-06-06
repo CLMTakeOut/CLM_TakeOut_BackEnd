@@ -27,4 +27,8 @@ public class OrderGoodsServiceImpl implements OrderGoodsService {
     public ArrayList<OrderGoods> selectOrderGoodsById(Integer orderId) {
         return orderGoodsMapper.selectOrderGoodsById(orderId);
     }
+
+    public int insertGoodsList(ArrayList<OrderGoods> orderGoodsList){
+        return orderGoodsMapper.insertGoodsList(orderGoodsList);
+    }
 }

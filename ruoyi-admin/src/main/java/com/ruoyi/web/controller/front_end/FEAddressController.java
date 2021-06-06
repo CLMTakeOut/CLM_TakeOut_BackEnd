@@ -63,4 +63,21 @@ public class FEAddressController {
             return JSON.toJSONString(new Response("error","666","获取列表失败!",null));
         }
     }
+
+
+    // 获取当前使用的地址
+    @RequestMapping(value = "/getCurrentAddress/{uid}",method = RequestMethod.GET)
+    public String getCurrentAddress(@PathVariable("uid")String uid){
+        Address address = new Address();
+        address.setCustomerId(Integer.valueOf(uid));
+        address.setUsing(1);
+        List<Address> addressList = addressService.selectAddressList(address);
+        JSONObject data = new JSONObject();
+        if (addressList != null){
+            data.put("address",addressList);
+            return JSON.toJSONString(new Response("success","200","获取成功!",data));
+        }else {
+            return JSON.toJSONString(new Response("err","666","获取失败!",data));
+        }
+    }
 }

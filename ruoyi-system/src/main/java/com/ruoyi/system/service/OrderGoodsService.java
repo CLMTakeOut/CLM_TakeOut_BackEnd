@@ -13,4 +13,5 @@ import java.util.ArrayList;
  */
 public interface OrderGoodsService {
     ArrayList<OrderGoods> selectOrderGoodsById(Integer orderId);
+    int insertGoodsList(ArrayList<OrderGoods> orderGoodsList);
 }

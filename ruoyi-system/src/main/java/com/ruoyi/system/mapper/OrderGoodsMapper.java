@@ -16,4 +16,7 @@ import java.util.ArrayList;
 public interface OrderGoodsMapper {
     /*根据订单id查询对应的商品*/
     ArrayList<OrderGoods> selectOrderGoodsById(Integer orderId);
+
+    /*插入多个商品订单记录*/
+    int insertGoodsList(ArrayList<OrderGoods> orderGoodsList);
 }

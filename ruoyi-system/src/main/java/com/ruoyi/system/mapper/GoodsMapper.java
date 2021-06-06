@@ -27,6 +27,7 @@ public interface GoodsMapper
      */
     public List<Goods> selectGoodsList(Goods goods);
 
+    public List<Goods> getConsider();
     /**
      * 新增【请填写功能名称】
      * 

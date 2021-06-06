@@ -42,7 +42,9 @@ public class GoodsServiceImpl implements IGoodsService
     {
         return goodsMapper.selectGoodsList(goods);
     }
-
+    public List<Goods> getConsider(){
+        return goodsMapper.getConsider();
+    }
     /**
      * 新增【请填写功能名称】
      * 

@@ -23,4 +23,11 @@
         from order_goods og inner join goods g on og.goods_id = g.goods_id
         where order_id = #{orderId};
     </select>
+    <!--插入多个记录-->
+    <insert id="insertGoodsList" parameterType="list">
+        insert into order_goods(order_id,goods_id,goods_amount) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.orderId},#{item.goodsId},#{item.goodsAmount})
+        </foreach>
+    </insert>
 </mapper>

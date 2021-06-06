@@ -400,6 +400,7 @@ export default {
       listGoods(this.queryParams).then((response) => {
         this.goodsList = response.rows;
         this.total = response.total;
+        this.uploadImgUrl += "1";
         this.loading = false;
       });
     },

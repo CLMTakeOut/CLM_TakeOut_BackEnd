@@ -60,14 +60,24 @@ public class CustomerLoginController {
     public String register(@RequestBody Customer customer){
         System.out.println(customer);
         Response response;  //结果对象
+        JSONObject data = new JSONObject();
         if (customer != null){
-            int i = customerService.insertCustomer(customer);
-            if (i != 0){
-                response = new Response("success","200","添加用户成功",null);
-                return JSON.toJSONString(response);
+            // 判断手机号是否存在
+            Integer isExist = customerService.findCustomerByTel(customer.getTelephone());
+
+            if (isExist == null){
+                int i = customerService.insertCustomer(customer);
+                data.put("isExist",false);
+                if (i != 0){
+                    response = new Response("success","200","添加用户成功",data);
+                    return JSON.toJSONString(response);
+                }else {
+                    response = new Response("error","666","添加失败",null);
+                    return  JSON.toJSONString(response);
+                }
             }else {
-                response = new Response("error","666","添加失败",null);
-                return  JSON.toJSONString(response);
+                data.put("isExist",true);
+                return JSON.toJSONString(new Response("waring","999","该手机号已存在",data));
             }
         }else {
             response = new Response("warning","999","没有获取到数据",null);

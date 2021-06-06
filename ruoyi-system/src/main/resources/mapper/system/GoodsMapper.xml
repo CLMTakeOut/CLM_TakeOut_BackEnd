@@ -15,20 +15,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="goodsDescribe"    column="goods_describe"    />
         <result property="goodsLogo"    column="goods_logo"    />
         <result property="goodsRecommend"    column="goods_recommend"    />
+        <result property="goodsType" column="goods_type"/>
     </resultMap>
 
     <sql id="selectGoodsVo">
-        select goods_id,shop_name,g.shop_id, goods_name, price, salesVolume, score, goods_describe, goods_logo, goods_recommend from goods g JOIN shop s ON s.shop_id = g.shop_id
+        select goods_id,shop_name,g.shop_id, goods_name, price, salesVolume,goods_type, score, goods_describe, goods_logo, goods_recommend from goods g JOIN shop s ON s.shop_id = g.shop_id
     </sql>
 
     <select id="selectGoodsList" parameterType="Goods" resultMap="GoodsResult">
         <include refid="selectGoodsVo"/>
-        <where>  
+        <where>
+            <if test="shopId != null"> and g.shop_id = #{shopId}</if>
             <if test="shopName != null and shopName != ''"> and shop_name = #{shopName}</if>
+            <if test="goodsType != null and goodsType != ''"> and goods_type = #{goodsType}</if>
             <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
             <if test="price != null "> and price = #{price}</if>
             <if test="salesVolume != null "> and salesVolume = #{salesVolume}</if>
             <if test="score != null "> and score = #{score}</if>
+            <if test="goodsRecommend != null "> and goods_recommend = #{goodsRecommend}</if>
         </where>
     </select>
     
@@ -36,7 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectGoodsVo"/>
         where goods_id = #{goodsId}
     </select>
-        
+
+    <select id="getConsider" resultMap="GoodsResult">
+        select goods_id,shop_name,g.shop_id, goods_name, price, salesVolume,goods_type, score, goods_describe, goods_logo, goods_recommend from goods g JOIN shop s ON s.shop_id = g.shop_id
+        order by salesVolume desc LIMIT 10;
+    </select>
     <insert id="insertGoods" parameterType="Goods" useGeneratedKeys="true" keyProperty="goodsId">
         insert into goods
         <trim prefix="(" suffix=")" suffixOverrides=",">
